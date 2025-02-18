@@ -9,56 +9,57 @@ This assignment aims to apply MongoDB concepts learned throughout the week, focu
 
 ### 1. Verify MongoDB Installation
 Open terminal and verify MongoDB installation with the following commands:
-**mongod --version**
+      mongod --version
 
 Start MongoShell
 
-**mongosh**
+    mongosh
 
 ### 2. Create the Library
 
-**use library**
+    use library
 
-**db.createCollection('books')**
+    db.createCollection('books')
 
 ### 3. Insert Multiple Books
-** db.books.insertMany([
-  {
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    publishedYear: 1960,
-    genre: "Fiction",
-    ISBN: "978-0061120084"
-  },
-  {
-    title: "1984",
-    author: "George Orwell",
-    publishedYear: 1949,
-    genre: "Dystopian",
-    ISBN: "978-0451524935"
-  },
-  {
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    publishedYear: 1925,
-    genre: "Classic",
-    ISBN: "978-0743273565"
-  },
-  {
-    title: "Moby-Dick",
-    author: "Herman Melville",
-    publishedYear: 1851,
-    genre: "Adventure",
-    ISBN: "978-1503280786"
-  },
-  {
-    title: "Pride and Prejudice",
-    author: "Jane Austen",
-    publishedYear: 2013,
-    genre: "Romance",
-    ISBN: "978-1503290563"
-  }
-]) **
+
+      db.books.insertMany([
+        {
+          title: "To Kill a Mockingbird",
+          author: "Harper Lee",
+          publishedYear: 1960,
+          genre: "Fiction",
+          ISBN: "978-0061120084"
+        },
+        {
+          title: "1984",
+          author: "George Orwell",
+          publishedYear: 1949,
+          genre: "Dystopian",
+          ISBN: "978-0451524935"
+        },
+        {
+          title: "The Great Gatsby",
+          author: "F. Scott Fitzgerald",
+          publishedYear: 1925,
+          genre: "Classic",
+          ISBN: "978-0743273565"
+        },
+        {
+          title: "Moby-Dick",
+          author: "Herman Melville",
+          publishedYear: 1851,
+          genre: "Adventure",
+          ISBN: "978-1503280786"
+        },
+        {
+          title: "Pride and Prejudice",
+          author: "Jane Austen",
+          publishedYear: 2013,
+          genre: "Romance",
+          ISBN: "978-1503290563"
+        }
+      ])
 
 Retrieving Data
 ### 4. Query Books
@@ -296,15 +297,15 @@ To create an index on the author field:
     db.books.createIndex({ author: 1 });
 
 ## Benefits of Indexing in MongoDB
-1. Improved Query Performance
+# 1. Improved Query Performance
 
 Indexes speed up query execution by allowing MongoDB to quickly locate documents based on indexed fields, without scanning the entire collection.
-2. Faster Sorting
+# 2. Faster Sorting
 
 Indexes allow MongoDB to perform sorting operations more efficiently.
-3. Unique Constraints
+# 3. Unique Constraints
 
 Indexes can enforce unique constraints, ensuring data integrity (e.g., no duplicate ISBNs).
-4. Efficient Aggregation
+# 4. Efficient Aggregation
 
 Indexes can optimize aggregation queries, especially when filtering, sorting, or grouping data.
