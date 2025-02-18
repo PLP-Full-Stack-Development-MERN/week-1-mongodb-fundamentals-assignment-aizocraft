@@ -297,15 +297,15 @@ To create an index on the author field:
     db.books.createIndex({ author: 1 });
 
 ## Benefits of Indexing in MongoDB
-# 1. Improved Query Performance
+## 1. Improved Query Performance
 
 Indexes speed up query execution by allowing MongoDB to quickly locate documents based on indexed fields, without scanning the entire collection.
-# 2. Faster Sorting
+## 2. Faster Sorting
 
 Indexes allow MongoDB to perform sorting operations more efficiently.
-# 3. Unique Constraints
+## 3. Unique Constraints
 
 Indexes can enforce unique constraints, ensuring data integrity (e.g., no duplicate ISBNs).
-# 4. Efficient Aggregation
+## 4. Efficient Aggregation
 
 Indexes can optimize aggregation queries, especially when filtering, sorting, or grouping data.
