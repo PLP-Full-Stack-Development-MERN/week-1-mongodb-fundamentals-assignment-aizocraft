@@ -8,20 +8,18 @@ This assignment aims to apply MongoDB concepts learned throughout the week, focu
 ## Setup MongoDB
 
 ### 1. Verify MongoDB Installation
-
 Open terminal and verify MongoDB installation with the following commands:
-
-
-mongod --version
+**mongod --version**
 
 Start MongoShell
-mongosh
+
+**mongosh**
 
 ### 2. Create the Library
 
-use library
+**use library**
 
-db.createCollection('books')
+**db.createCollection('books')**
 
 ### 3. Insert Multiple Books
 
