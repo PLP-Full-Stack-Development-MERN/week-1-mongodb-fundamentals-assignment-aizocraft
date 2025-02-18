@@ -1,84 +1,314 @@
-**Week 1: MongoDB Fundamentals Assignment**
+# MongoDB Fundamentals Assignment
 
-**Objective:**
+## Objective:
+This assignment aims to apply MongoDB concepts learned throughout the week, focusing on CRUD operations, data modeling, aggregation, indexing, and other key MongoDB skills.
 
-- Apply MongoDB concepts learned throughout the week.
-- Practice working with databases, collections, and documents.
-- Develop skills in CRUD operations and data modeling.
+---
 
-**Instructions:**
+## Setup MongoDB
 
-1. **Setup MongoDB:**
+### 1. Verify MongoDB Installation
 
-   - Install MongoDB locally or create a free cluster on MongoDB Atlas.
-   - Start the MongoDB server locally or connect to the MongoDB Atlas cluster.
-   - Verify the installation and connection by running:
-     ```sh
-     mongo --version
-     ```
+Open terminal and verify MongoDB installation with the following commands:
 
-2. **Database and Collection Creation:**
 
-   - Create a new database called `library`.
-   - Inside `library`, create a collection named `books`.
+mongod --version
 
-3. **Insert Data:**
+Start MongoShell
+mongosh
 
-   - Insert at least five book records into the `books` collection.
-   - Each book should contain fields such as `title`, `author`, `publishedYear`, `genre`, and `ISBN`.
+### 2. Create the Library
 
-4. **Retrieve Data:**
+use library
 
-   - Retrieve all books from the collection.
-   - Query books based on a specific author.
-   - Find books published after the year 2000.
+db.createCollection('books')
 
-5. **Update Data:**
+### 3. Insert Multiple Books
 
-   - Update the `publishedYear` of a specific book.
-   - Add a new field called `rating` to all books and set a default value.
+db.books.insertMany([
+  {
+    title: "To Kill a Mockingbird",
+    author: "Harper Lee",
+    publishedYear: 1960,
+    genre: "Fiction",
+    ISBN: "978-0061120084"
+  },
+  {
+    title: "1984",
+    author: "George Orwell",
+    publishedYear: 1949,
+    genre: "Dystopian",
+    ISBN: "978-0451524935"
+  },
+  {
+    title: "The Great Gatsby",
+    author: "F. Scott Fitzgerald",
+    publishedYear: 1925,
+    genre: "Classic",
+    ISBN: "978-0743273565"
+  },
+  {
+    title: "Moby-Dick",
+    author: "Herman Melville",
+    publishedYear: 1851,
+    genre: "Adventure",
+    ISBN: "978-1503280786"
+  },
+  {
+    title: "Pride and Prejudice",
+    author: "Jane Austen",
+    publishedYear: 2013,
+    genre: "Romance",
+    ISBN: "978-1503290563"
+  }
+])
 
-6. **Delete Data:**
+Retrieving Data
+### 4. Query Books
 
-   - Delete a book by its `ISBN`.
-   - Remove all books of a particular genre.
+    Retrieve all books:
 
-7. **Data Modeling Exercise:**
+db.books.find().pretty()
 
-   - Create a data model for an e-commerce platform including collections for `users`, `orders`, and `products`.
-   - Decide on appropriate fields and relationships (embedding vs. referencing).
-   - Implement the structure using MongoDB.
+    Query books by author (e.g., Harper Lee):
 
-8. **Aggregation Pipeline:**
+db.books.find({ author: "Harper Lee" })
 
-   - Use aggregation to find the total number of books per genre.
-   - Calculate the average published year of all books.
-   - Identify the top-rated book.
+    Find books published after the year 2000:
 
-9. **Indexing:**
+db.books.find({ publishedYear: { $gt: 2000 } })
 
-   - Create an index on the `author` field to optimize query performance.
-   - Explain the benefits of indexing in MongoDB.
+Updating Data
+### 5. Update Documents
 
-10. **Testing:**
+    Update the published year of a book (e.g., "The Great Gatsby"):
 
-   - Use the MongoDB shell or Compass to verify the inserted and updated records.
-   - Ensure all queries return the expected results.
+db.books.updateOne(
+  { title: "The Great Gatsby" },
+  { $set: { publishedYear: 1926 } }
+)
 
-11. **Documentation:**
+    Add a new field rating to all books:
 
-   - Create a `README.md` file with step-by-step instructions on setting up and running your database.
+db.books.updateMany(
+  {},
+  { $set: { rating: 0 } }
+)
 
-12. **Submission:**
+Deleting Data
+### 6. Remove Documents
 
-   - Push your code and scripts to your GitHub repository.
+    Delete a book by ISBN (e.g., "Pride and Prejudice"):
 
-**Evaluation Criteria:**
+db.books.deleteOne({ ISBN: "978-1503290563" })
 
-- Proper setup and connection of MongoDB.
-- Accurate implementation of CRUD operations.
-- Correct data modeling with appropriate relationships.
-- Use of aggregation for insightful queries.
-- Clear and concise documentation.
-- Proper indexing implementation.
+    Remove all books of a particular genre (e.g., "Adventure"):
 
+db.books.deleteMany({ genre: "Adventure" })
+
+### 7 Collection Design
+## i. Users Collection
+
+The users collection stores details about each user, including profile information, orders, and shopping cart.
+
+db.users.insertOne({
+  username: "john_doe",
+  email: "john.doe@example.com",
+  passwordHash: "hashed_password",
+  fullName: "John Doe",
+  address: {
+    street: "123 Main St",
+    city: "Some City",
+    zipCode: "12345"
+  },
+  phone: "123-456-7890",
+  orders: [ObjectId("order_id_1"), ObjectId("order_id_2")],
+  cart: [
+    { productId: ObjectId("product_id_1"), quantity: 2 },
+    { productId: ObjectId("product_id_2"), quantity: 1 }
+  ]
+})
+
+## ii. Orders Collection
+
+The orders collection stores order details, including the user who placed the order, items in the order, and total price.
+
+db.orders.insertOne({
+  userId: ObjectId("user_id_1"),
+  orderDate: new Date(),
+  status: "Shipped",
+  totalPrice: 150.75,
+  items: [
+    { productId: ObjectId("product_id_1"), quantity: 2, price: 50 },
+    { productId: ObjectId("product_id_2"), quantity: 1, price: 50.75 }
+  ],
+  shippingAddress: {
+    street: "456 Another St",
+    city: "Some City",
+    zipCode: "67890"
+  }
+})
+
+## iii. Products Collection
+
+The products collection stores product details, including name, description, price, category, stock quantity, and images.
+
+db.products.insertOne({
+  name: "Laptop",
+  description: "A powerful gaming laptop",
+  price: 999.99,
+  category: "Electronics",
+  stockQuantity: 50,
+  createdAt: new Date(),
+  updatedAt: new Date()
+})
+
+Relationships
+
+    Users → Orders: A user can place many orders. This is a one-to-many relationship. The orders field in the users collection references order documents.
+    Orders → Products: Each order can contain multiple products. This is a many-to-many relationship, handled by embedding product references (via productId) in the items array within the orders collection.
+    Users → Cart: The cart is embedded within the user document. It contains references to products in the form of productId and the quantity of each product.
+
+## MongoDB Queries
+# i.  Insert a User
+
+db.users.insertOne({
+  username: "john_doe",
+  email: "john.doe@example.com",
+  passwordHash: "hashed_password",
+  fullName: "John Doe",
+  address: {
+    street: "123 Main St",
+    city: "Some City",
+    zipCode: "12345"
+  },
+  phone: "123-456-7890"
+})
+
+## ii. Insert an Order
+
+db.orders.insertOne({
+  userId: ObjectId("user_id_1"),
+  orderDate: new Date(),
+  status: "Pending",
+  totalPrice: 200.99,
+  items: [
+    { productId: ObjectId("product_id_1"), quantity: 2, price: 50 },
+    { productId: ObjectId("product_id_2"), quantity: 1, price: 50.75 }
+  ]
+})
+
+## iii. Insert a Product
+
+db.products.insertOne({
+  name: "Wireless Mouse",
+  description: "A comfortable wireless mouse",
+  price: 20.99,
+  category: "Accessories",
+  stockQuantity: 100,
+})
+
+## iv. Fetch Orders for a User
+
+db.users.aggregate([
+  {
+    $match: { _id: ObjectId("user_id_1") }
+  },
+  {
+    $lookup: {
+      from: "orders",
+      localField: "orders",
+      foreignField: "_id",
+      as: "orderDetails"
+    }
+  }
+])
+
+##v. Get Products in an Order
+
+db.orders.aggregate([
+  {
+    $match: { _id: ObjectId("order_id_1") }
+  },
+  {
+    $lookup: {
+      from: "products",
+      localField: "items.productId",
+      foreignField: "_id",
+      as: "orderItems"
+    }
+  }
+])
+
+### 9. Indexes
+
+To optimize query performance, create indexes on frequently queried fields:
+
+    Index for faster searching of users by email:
+
+db.users.createIndex({ email: 1 });
+
+    Index for faster searching of orders by userId:
+
+db.orders.createIndex({ userId: 1 });
+
+    Index for faster searching of products by category:
+
+db.products.createIndex({ category: 1 });
+
+Aggregation Example
+## Aggregate Data
+
+db.books.aggregate([
+  // 1. Find the total number of books per genre
+  {
+    $facet: {
+      totalBooksPerGenre: [
+        {
+          $group: {
+            _id: "$genre",
+            totalBooks: { $sum: 1 }
+          }
+        }
+      ],
+      // 2. Calculate the average published year of all books
+      averagePublishedYear: [
+        {
+          $group: {
+            _id: null,
+            averagePublishedYear: { $avg: "$publishedYear" }
+          }
+        }
+      ],
+      // 3. Identify the top-rated book
+      topRatedBook: [
+        {
+          $sort: { rating: -1 }
+        },
+        {
+          $limit: 1
+        }
+      ]
+    }
+  }
+])
+
+## Create an Index on the Author Field
+
+To create an index on the author field:
+
+db.books.createIndex({ author: 1 });
+
+## Benefits of Indexing in MongoDB
+1. Improved Query Performance
+
+Indexes speed up query execution by allowing MongoDB to quickly locate documents based on indexed fields, without scanning the entire collection.
+2. Faster Sorting
+
+Indexes allow MongoDB to perform sorting operations more efficiently.
+3. Unique Constraints
+
+Indexes can enforce unique constraints, ensuring data integrity (e.g., no duplicate ISBNs).
+4. Efficient Aggregation
+
+Indexes can optimize aggregation queries, especially when filtering, sorting, or grouping data.
